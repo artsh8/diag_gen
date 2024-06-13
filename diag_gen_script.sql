@@ -17,6 +17,7 @@ FROM information_schema.columns c
 LEFT JOIN pg_catalog.pg_description d ON d.objsubid = c.ordinal_position 
 									AND d.objoid = c.table_name::regclass 
 WHERE c.table_schema = (SELECT sn FROM sch_name)
+-- AND c.table_name LIKE 'person%' -- При необходимости можно отфильтровать по названиям таблиц
 ORDER BY c.table_schema, c.table_name, c.ordinal_position),
 
 ins AS (
@@ -30,7 +31,6 @@ FROM (VALUES ('erDiagram', 1, 'a')) er (res, rn, tn)
 UNION 
 SELECT ' ' || table_name || ' { ' || insd || ' }' AS res, 2 AS rn, table_name
 FROM ins
-
 
 UNION
 SELECT *
